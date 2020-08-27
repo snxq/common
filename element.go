@@ -24,3 +24,18 @@ func AllF(f func(interface{}) bool, x ...interface{}) bool {
 func AllZero(x ...interface{}) bool {
 	return AllF(IsZero, x...)
 }
+
+// AnyF 存在一个元素为真 返回真, 否则为假
+func AnyF(f func(interface{}) bool, x ...interface{}) bool {
+	for _, e := range x {
+		if f(e) {
+			return true
+		}
+	}
+	return false
+}
+
+// AnyZero 存在一个元素为零值, 返回真, 否则为假
+func AnyZero(x ...interface{}) bool {
+	return AnyF(IsZero, x...)
+}
