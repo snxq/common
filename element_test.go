@@ -205,3 +205,128 @@ func TestAnyZero(t *testing.T) {
 		})
 	}
 }
+
+func TestContainsStringF(t *testing.T) {
+	type args struct {
+		slice []string
+		s     string
+		f     func(string, string) bool
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			name: "空参数",
+			args: args{
+				slice: []string{},
+				s:     "",
+			},
+			want: false,
+		}, {
+			name: "永真",
+			args: args{
+				slice: []string{"a", "b"},
+				s:     "c",
+				f:     func(string, string) bool { return true },
+			},
+			want: true,
+		}, {
+			name: "",
+			args: args{
+				slice: []string{"a", "b"},
+				s:     "a",
+				f: func(a, b string) bool {
+					a = "c"
+					return a == b
+				},
+			},
+			want: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := ContainsStringF(tt.args.slice, tt.args.s, tt.args.f); got != tt.want {
+				t.Errorf("ContainsStringF() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestContainsString(t *testing.T) {
+	type args struct {
+		slice []string
+		s     string
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			name: "空",
+			args: args{
+				slice: []string{},
+				s:     "a",
+			},
+			want: false,
+		}, {
+			name: "包含",
+			args: args{
+				slice: []string{"a", "b"},
+				s:     "a",
+			},
+			want: true,
+		}, {
+			name: "不包含",
+			args: args{
+				slice: []string{"a", "b"},
+				s:     "c",
+			},
+			want: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := ContainsString(tt.args.slice, tt.args.s); got != tt.want {
+				t.Errorf("ContainsString() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestContainsUint32(t *testing.T) {
+	type args struct {
+		slice []uint32
+		n     uint32
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			name: "存在",
+			args: args{
+				slice: []uint32{1, 2, 3},
+				n:     2,
+			},
+			want: true,
+		}, {
+			name: "不存在",
+			args: args{
+				slice: []uint32{1, 2, 3},
+				n:     0,
+			},
+			want: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := ContainsUint32(tt.args.slice, tt.args.n); got != tt.want {
+				t.Errorf("ContainsUint32() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

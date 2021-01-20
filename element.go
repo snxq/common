@@ -39,3 +39,33 @@ func AnyF(f func(interface{}) bool, x ...interface{}) bool {
 func AnyZero(x ...interface{}) bool {
 	return AnyF(IsZero, x...)
 }
+
+// ContainsStringF checks if a given slice of strings contains the provided string.
+func ContainsStringF(slice []string, s string, f func(string, string) bool) bool {
+	for _, item := range slice {
+		if f(item, s) {
+			return true
+		}
+	}
+	return false
+}
+
+// ContainsString checks if a given slice of strings contains the provided string.
+func ContainsString(slice []string, s string) bool {
+	return ContainsStringF(slice, s, func(a, b string) bool { return a == b })
+}
+
+// ContainsUint32F check if a given slice of uint32 contains the provided uint32.
+func ContainsUint32F(slice []uint32, n uint32, f func(uint32, uint32) bool) bool {
+	for _, item := range slice {
+		if f(item, n) {
+			return true
+		}
+	}
+	return false
+}
+
+// ContainsUint32 check if a given slice of uint32 contains the provided uint32.
+func ContainsUint32(slice []uint32, n uint32) bool {
+	return ContainsUint32F(slice, n, func(a, b uint32) bool { return a == b })
+}
